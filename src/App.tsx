@@ -10,7 +10,8 @@ import {
   AlertCircle,
   Lightbulb,
   Compass,
-  ArrowRightCircle
+  ArrowRightCircle,
+  Mail
 } from 'lucide-react'
 
 // ==========================================
@@ -414,11 +415,13 @@ export default function App() {
   const [primaryResult, setPrimaryResult] = useState<AnimalProfile | null>(null)
   const [secondaryTypes, setSecondaryTypes] = useState<string[]>([])
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [isSubscribed, setIsSubscribed] = useState(false)
 
   // 테스트 시작
   const startQuiz = () => {
     setScores({ A: 0, B: 0, C: 0, D: 0, E: 0 })
     setCurrentIdx(0)
+    setIsSubscribed(false)
     setGameState('quiz')
   }
 
@@ -701,6 +704,53 @@ export default function App() {
                   🔍 맑은 날 숲속 산책로에서 <span className="font-semibold text-stone-700">[{secondaryTypes.join(', ')}]</span> 성향도 함께 발견되곤 해요!
                 </div>
               )}
+
+              {/* 이메일 수집 (리드 마그넷) 영역 */}
+              <div className="bg-emerald-800 rounded-2xl p-5 text-white shadow-md relative overflow-hidden">
+                {/* 배경 장식 */}
+                <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
+                
+                <h4 className="font-bold text-[15px] mb-2 flex items-center gap-2 relative z-10">
+                  <Mail size={16} />
+                  내 성향 심층 분석 리포트 무료 받기
+                </h4>
+                <p className="text-emerald-100 text-[12.5px] leading-relaxed mb-4 relative z-10">
+                  테스트 결과만으로는 아쉬우신가요? 이메일을 남겨주시면 <strong>{primaryResult.name}</strong>의 숨겨진 심리 장벽과 맞춤형 행동 플랜이 담긴 상세 리포트를 보내드립니다.
+                </p>
+                
+                {!isSubscribed ? (
+                  <form 
+                    className="flex flex-col gap-2 relative z-10"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      // 실제로는 여기에 Formspree, ConvertKit 등의 API 연동 코드가 들어갑니다.
+                      setIsSubscribed(true);
+                      showToast('신청이 완료되었습니다! 리포트를 곧 보내드릴게요 💌');
+                    }}
+                  >
+                    <input 
+                      type="email" 
+                      placeholder="이메일 주소를 입력해주세요" 
+                      required
+                      className="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-emerald-600/50 text-white placeholder-emerald-200/60 focus:outline-none focus:border-white focus:bg-white/20 transition-colors text-sm"
+                    />
+                    <button 
+                      type="submit"
+                      className="w-full py-2.5 bg-white text-emerald-900 font-bold rounded-xl text-sm hover:bg-emerald-50 transition-colors active:scale-[0.98] cursor-pointer"
+                    >
+                      무료 리포트 신청하기
+                    </button>
+                    <p className="text-[10px] text-emerald-300 text-center mt-1">
+                      스팸은 보내지 않습니다. 언제든 구독을 취소할 수 있습니다.
+                    </p>
+                  </form>
+                ) : (
+                  <div className="bg-white/10 border border-emerald-400/30 rounded-xl p-4 text-center relative z-10">
+                    <p className="font-bold text-sm text-emerald-50">🎉 신청 완료!</p>
+                    <p className="text-[11px] text-emerald-200 mt-1">입력하신 이메일로 리포트를 곧 발송해 드릴게요.</p>
+                  </div>
+                )}
+              </div>
 
               {/* 크레킷 전자책 부드러운 유도 배너 (광고스럽지 않고 가독성 높은 가이드 형식) */}
               <div className="bg-gradient-to-br from-emerald-50/80 to-stone-50 border border-emerald-200/50 rounded-2xl p-5 shadow-sm space-y-3">
