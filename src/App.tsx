@@ -721,9 +721,27 @@ export default function App() {
                 {!isSubscribed ? (
                   <form 
                     className="flex flex-col gap-2 relative z-10"
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault();
-                      // 실제로는 여기에 Formspree, ConvertKit 등의 API 연동 코드가 들어갑니다.
+                      const emailInput = e.currentTarget.querySelector('input[type="email"]') as HTMLInputElement;
+                      if (!emailInput || !emailInput.value) return;
+                      
+                      try {
+                        const response = await fetch('/api/subscribe', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ email: emailInput.value })
+                        });
+                        
+                        if (!response.ok) {
+                          throw new Error('Network response was not ok');
+                        }
+                      } catch (error) {
+                        console.error('Subscription failed', error);
+                        showToast('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+                        return;
+                      }
+                      
                       setIsSubscribed(true);
                       showToast('신청이 완료되었습니다! 리포트를 곧 보내드릴게요 💌');
                     }}
