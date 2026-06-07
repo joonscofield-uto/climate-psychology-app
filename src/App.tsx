@@ -764,7 +764,7 @@ export default function App() {
                 </p>
 
                 <a
-                  href="https://creket.com/" // 크레킷 판매 페이지 주소
+                  href="https://joonscofield.crekit.io/l/deals/o3jq3nyx"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-2.5 px-4 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-2 group transition-colors cursor-pointer text-center"
